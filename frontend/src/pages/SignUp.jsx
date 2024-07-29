@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
@@ -9,6 +9,7 @@ function SignUp() {
 
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   function sweetAlert(icon,title){
 
@@ -55,6 +56,7 @@ function SignUp() {
   
       const data = await res.data;
       setLoading(false)
+      if(data) navigate('/sign-in')
 
     } catch (error) {
       setLoading(false)
