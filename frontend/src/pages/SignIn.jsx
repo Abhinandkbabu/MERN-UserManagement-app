@@ -3,43 +3,20 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import { useState } from 'react';
-import Swal from 'sweetalert2'
+import { signInFailure,signInStart, signInSuccess } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function SignIn() {
 
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const {loading, error} =useSelector((state) => state.user)
   const navigate = useNavigate()
-
-  function sweetAlert(icon,title){
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      showConfirmButton: false,
-      timer: 1000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.style.backgroundColor = '	#ede9ee';
-        toast.style.color = '#d94a4e'
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      }
-    });
-    Toast.fire({
-      icon: icon,
-      title: title
-    });
-    return
-  }
+  const dispatch = useDispatch()
 
   const submitForm = async (values) => {
     const formData = JSON.stringify(values, null, 2);
   
     try {
-      setLoading(true)
-      setError(false)
-
+      dispatch(signInStart())
       const res = await axios.post('http://localhost:3000/api/auth/signin', formData, {
         headers: {
           'Content-Type': 'application/json',
@@ -47,22 +24,15 @@ function SignIn() {
       });
   
       const data = await res.data;
-      if(data) navigate('/')
-      setLoading(false)
+      if(data) {
+        dispatch(signInSuccess(data))
+        navigate('/')
+      }
 
     } catch (error) {
-      setLoading(false)
-      setError(true)
-
-      if (error.response) {
-      sweetAlert('info','Email Already in Use')
-      
-    } else if (error.request) {
-      sweetAlert('error','Server not Responding')
-    } else {
-      sweetAlert('error', "Something Went Wrong")
-    }
-      console.error(error);
+      // setLoading(false)
+      // setError(true)
+      dispatch(signInFailure(error))
     }
   };
 
@@ -136,7 +106,7 @@ function SignIn() {
         </Link>
       </div>
       <div className="flex justify-center items-center w-full">
-        <p className="text-red-700 mt-5">{error && 'Something went wrong!'}</p>
+        <p className="text-red-700 mt-5">{error && 'incorrect Email or Password!'}</p>
       </div>
     </div>
   )
