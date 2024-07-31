@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useState } from 'react';
 import { signInFailure,signInStart, signInSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 
 function SignIn() {
 
@@ -98,11 +99,14 @@ function SignIn() {
           >
             {loading ? 'Loading...' : 'Sign In'}
           </button>
+
         </form>
+        <OAuth />  {/*  signin with google */}
       <div className='flex gap-2 mt-5'>
         <p>Dont Have an accout ?</p>
         <Link to='/sign-up'>
           <span className='text-blue-500'>Sign Up</span>
+         
         </Link>
       </div>
       <div className="flex justify-center items-center w-full">

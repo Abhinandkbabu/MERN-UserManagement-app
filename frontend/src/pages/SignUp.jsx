@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios'
 import { useState } from 'react';
 import Swal from 'sweetalert2'
+import OAuth from '../components/OAuth';
 
 function SignUp() {
 
@@ -172,6 +173,7 @@ function SignUp() {
             {loading ? 'Loading...' : 'Sign Up'}
           </button>
         </form>
+          <OAuth /> 
       <div className='flex gap-2 mt-5'>
         <p>Have an accout ?</p>
         <Link to='/sign-in'>

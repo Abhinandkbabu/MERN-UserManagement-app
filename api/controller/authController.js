@@ -31,3 +31,27 @@ export const signin = async (req, res, next) => {
         next(err) 
     }
 }
+
+export const google = async(req,res,next) => {
+    try {
+                
+        const newuser = await User.findOne({email:req.body.email})
+        if(newuser){
+            const token = jwt.sign({id:newuser._id}, process.env.JWT_SECRET);
+            const { password: _, ...user } = newuser._doc;
+            const expiryDate = new Date(Date.now() + 7200000) //two hours
+            res.cookie('access_token', token, {httpOnly: true, expires:expiryDate}).status(200).json(user)
+        }else{
+            const generatedPassword = `${req.body.email}1234`;
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+            const newUser = await User.create({username:req.body.name.split(" ").join('').toLowerCase() , email:req.body.email , password : hashedPassword, profilePicture: req.body.photo}) 
+            const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET);
+            const expiryDate = new Date(Date.now() + 7200000) //two hours
+            const { password: _, ...user } = newUser._doc
+            res.cookie('access_token',token, {httpOnly:true,expires:expiryDate}).status(200).json(user)
+        }
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
