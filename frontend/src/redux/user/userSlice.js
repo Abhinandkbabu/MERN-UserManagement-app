@@ -70,27 +70,3 @@ export const {
 export default userSlice.reducer;
 
 
-const initialState = {
-  product : null,
-  loading : false
-}
-
-const ProductSlice = createSlice({
-  name:'Product',
-  initialState,
-  reducers:{
-    start:(state)=>{
-      state.loading=true
-    },
-    
-    createProduct : (state,action)=>{
-      state.Product = action.payload;
-      
-    },
-
-    updateProduct:(state,action)=>{
-      state.procut = action.payload;
-      state.loading=false
-    }
-  }
-})
