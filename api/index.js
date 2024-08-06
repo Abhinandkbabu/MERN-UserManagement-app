@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoute.js'
 import authRoutes from './routes/authRoute.js'
 import adminRoute from './routes/adminRoute.js'
 import cookieParser from 'cookie-parser';
+import path from 'path'
 
 dotenv.config()
 
@@ -14,7 +15,15 @@ mongoose
 .then(()=>console.log('database connected'))
 .catch(err=>console.log(err))
 
+const __dirname = path.resolve()
+
 const app = express()
+
+app.use(express.static(path.join(__dirname, '/frontend/dist')))
+
+app.get('*', (req,res)=>{
+    res.sendFile(path.join(__dirname, 'frontend', 'dist, index.html'))
+})
 
 app.use(cors({
     origin: 'http://localhost:5173', // Your frontend URL
