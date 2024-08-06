@@ -48,4 +48,4 @@ app.use((err, req, res, next)=>{
     })
 })
 
-app.listen(process.env.PORT, ()=> console.log("Server listning in 3000"))
+app.listen(process.env.PORT, ()=> console.log(`Server listning in ${process.env.PORT}` ))
