@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     profilePicture:{
         type:String,
         default: "https://isobarscience-1bfd8.kxcdn.com/wp-content/uploads/2020/09/default-profile-picture1.jpg"
+    },
+    status: {
+        type:String,
+        default: 'active'
     }
 
 },{timestamps :true})

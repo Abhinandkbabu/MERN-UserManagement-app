@@ -2,10 +2,12 @@ import {Link , useNavigate} from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
-import { useState } from 'react';
 import { signInFailure,signInStart, signInSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
+import Swal from 'sweetalert2'
+
+axios.defaults.withCredentials = true;
 
 function SignIn() {
 
@@ -25,14 +27,37 @@ function SignIn() {
       });
   
       const data = await res.data;
+
+      if(data.status!=='active'){
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "center",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.style.backgroundColor = '	#ede9ee';
+            toast.style.color = '#d94a4e'
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: 'info',
+          title: 'User is blocked by Admin'
+        });
+        navigate('/')
+        dispatch(signInFailure())
+        return
+      }
+
       if(data) {
         dispatch(signInSuccess(data))
         navigate('/')
       }
 
     } catch (error) {
-      // setLoading(false)
-      // setError(true)
       dispatch(signInFailure(error))
     }
   };

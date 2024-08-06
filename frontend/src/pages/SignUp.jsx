@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useState } from 'react';
 import Swal from 'sweetalert2'
 import OAuth from '../components/OAuth';
+axios.defaults.withCredentials = true;
 
 function SignUp() {
 
@@ -55,7 +56,7 @@ function SignUp() {
         },
       });
   
-      const data = await res.data;
+      const data = res.data;
       setLoading(false)
       if(data) navigate('/sign-in')
 

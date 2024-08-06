@@ -3,10 +3,12 @@ import { app } from '../util/firebase.js';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice.js';
+import { useNavigate } from 'react-router-dom'
+axios.defaults.withCredentials = true;
 
 const OAuth = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -23,6 +25,7 @@ const OAuth = () => {
 
       if (res.data) {
         dispatch(signInSuccess(res.data));
+        navigate('/')
       }
     } catch (err) {
       console.error('Error during Google sign-in:', err);

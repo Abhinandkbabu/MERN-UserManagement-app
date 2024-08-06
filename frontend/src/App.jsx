@@ -8,6 +8,8 @@ import Profile from './pages/Profile'
 import React from 'react'
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute'
+import AdminLogin from './pages/AdminLogin'
+import AdminHome from './pages/AdminHome'
 
 export default function App() {
   return(
@@ -21,6 +23,9 @@ export default function App() {
         <Route element={<PrivateRoute />} >
           <Route path='/profile' element = { <Profile />} />
         </Route>
+
+        <Route path='/admin' element={<AdminLogin />} />
+        <Route path='/admin-Home' element={<AdminHome />}/>
       </Routes>
     </BrowserRouter>
   ) 
